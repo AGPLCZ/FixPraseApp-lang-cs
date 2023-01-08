@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+ Copyright 2021 Netsyms Technologies.
+
+ Redistribution and use in source and binary forms, with or without modification, are permitted
+ provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice, this list of conditions
+ and the following disclaimer.
+
+ 2. Redistributions in binary form must reproduce the above copyright notice, this list of
+ conditions and the following disclaimer in the documentation and/or other materials provided with
+ the distribution.
+
+ 3. Neither the name of the copyright holder nor the names of its contributors may be used to
+ endorse or promote products derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        -->
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FixPhrase</title>
+        <link rel="icon" href="img/favicon.png" />
+        <link rel=“canonical” href=“https://fixphrase.com” />
+        <link rel="stylesheet" href="https://static.netsyms.net/bootstrap/5/bootstrap.quartz.min.css" />
+        <link rel="stylesheet" href="js/maplibre-gl/dist/mapbox-gl.css" />
+        <link rel="stylesheet" href="style.css" />
+        <meta property="og:title" content="FixPhrase">
+        <meta property="og:description" content="Describe and locate any place on Earth with just four words.">
+        <meta property="og:image" content="https://fixphrase.com/img/socialcard.png">
+        <meta property="og:url" content="https://fixphrase.com">
+        <meta name="twitter:card" content="summary_large_image">
+        <script src="https://static.netsyms.net/jquery/jquery.min.js"></script>
+        <script src="https://static.netsyms.net/bootstrap/5/bootstrap.bundle.min.js"></script>
+        <script src="js/fixphrase.js"></script>
+        <script src="js/map.js"></script>
+        <script src="js/maplibre-gl/dist/mapbox-gl.js"></script>
+        <script src="js/map_maplibre.js"></script>
+        <script src="js/map.js"></script>
+
+        <!-- Matomo -->
+        <script type="text/javascript">
+            var _paq = window._paq = window._paq || [];
+            /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function () {
+                var u = "https://analytics.netsyms.net/";
+                _paq.push(['setTrackerUrl', u + 'matomo.php']);
+                _paq.push(['setSiteId', '35']);
+                var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+                g.type = 'text/javascript';
+                g.async = true;
+                g.src = u + 'matomo.js';
+                s.parentNode.insertBefore(g, s);
+            })();
+        </script>
+        <!-- End Matomo Code -->
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href=".">
+                    <img src="img/logo.128.png" alt="" width="48" height="48" class="d-inline-block align-text-middle">
+                    &nbsp; FixPhrase
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#appModal">Android/iOS App</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://source.netsyms.com/Netsyms/fixphrase.com/wiki/How-It-Works">How it Works</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://source.netsyms.com/Netsyms/fixphrase.com">Open Source</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container mw-100" id="page-container">
+            <div class="card mb-2 mt-2 border-secondary">
+                <div class="card-header text-dark">
+                    Locate any place on Earth with just four words.
+                    <span class="taptext">Tap</span><span class="clicktext">Click</span> the map to
+                    get the unique FixPhrase for that spot. Type a FixPhrase into the search box to
+                    pinpoint it on the map.
+                </div>
+                <div class="card-body">
+                    <div class="input-group d-none d-md-flex">
+                        <input class="form-control" type="text" placeholder="Enter FixPhrase or Address" id="wordbox"/>
+                        <button class="btn btn-secondary" onclick="dolookup($('#wordbox').val());">Find on Map</button>
+                    </div>
+                    <div class="d-grid d-md-none gap-2">
+                        <input class="form-control" type="text" placeholder="Enter FixPhrase or Address" id="wordbox-mobile"/>
+                        <button class="btn btn-secondary btn-block" onclick="dolookup($('#wordbox-mobile').val());">Find on Map</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-2 border-secondary" id="mapcard">
+                <a name="map"></a>
+                <div class="card-body p-2">
+                    <div id="mapbox" class="w-100"></div>
+                    <ul class="nav nav-pills pt-2" id="map-style-switcher">
+                        <li class="nav-item p-1">
+                            <a class="nav-link active" href="" data-style="street">Light</a>
+                        </li>
+                        <li class="nav-item p-1">
+                            <a class="nav-link" href="" data-style="dark">Dark</a>
+                        </li>
+                        <li class="nav-item p-1">
+                            <a class="nav-link" href="" data-style="terrain">Topo</a>
+                        </li>
+                        <li class="nav-item p-1">
+                            <a class="nav-link" href="" data-style="satellite">Satellite</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="appModal" tabindex="-1" aria-labelledby="appModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="appModalLabel">Get the App</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        The FixPhrase app is easier to use than the website on small screens, and
+                        adds easy sharing options for your location. It has a dark mode and extra
+                        map styles, and is fully open source.
+                        Your location doesn't leave your device and all calculations are done locally.
+
+                        <div>
+                            <a class="btn btn-info m-1" href="https://play.google.com/store/apps/details?id=com.fixphrase.app">
+                                Android (Google Play)
+                            </a>
+                            <a class="btn btn-info m-1" href="https://apps.apple.com/us/app/fixphrase/id1598775970">
+                                iPhone/iPad (App Store)
+                            </a>
+                        </div>
+                        <div>
+                            <a class="btn btn-info m-1 btn-sm" href="https://repo.netsyms.com/">
+                                F-Droid repository
+                            </a>
+                            <a class="btn btn-info m-1 btn-sm" href="https://build.netsyms.net/job/FixPhrase%20App/11/artifact/SignApksBuilder-out/androidreleasecert/FixPhrase_1.1.0-11-unsigned.apk/FixPhrase_1.1.0-11.apk">
+                                Android (APK)
+                            </a>
+                            <a class="btn btn-info m-1 btn-sm" href="https://source.netsyms.com/Netsyms/FixPhraseApp">
+                                Source Code
+                            </a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="js/app.js"></script>
+    </body>
+</html>

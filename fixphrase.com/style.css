@@ -1,0 +1,109 @@
+/*
+ Copyright 2021 Netsyms Technologies.
+
+ Redistribution and use in source and binary forms, with or without modification, are permitted
+ provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice, this list of conditions
+ and the following disclaimer.
+
+ 2. Redistributions in binary form must reproduce the above copyright notice, this list of
+ conditions and the following disclaimer in the documentation and/or other materials provided with
+ the distribution.
+
+ 3. Neither the name of the copyright holder nor the names of its contributors may be used to
+ endorse or promote products derived from this software without specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+ FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+ IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+body {
+    background-attachment: fixed;
+}
+
+@media (min-width: 1200px) and (max-width: 1499px) {
+    #page-container {
+        padding-left: 10rem;
+        padding-right: 10rem;
+    }
+}
+
+@media (min-width: 1500px) {
+    #page-container {
+        padding-left: 15rem;
+        padding-right: 15rem;
+    }
+}
+
+#mapcard {
+    flex-grow: 9999;
+    max-height: 90vh;
+    height: 800px;
+}
+
+#mapbox .mapboxgl-user-location-dot, #mapbox .mapboxgl-user-location-accuracy-circle {
+    pointer-events: none;
+}
+
+#header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    padding: 1em;
+    flex-wrap: wrap;
+}
+
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+    border-top-color: rgba(255, 255, 255, 0.4);
+    border-width: 0.5rem 0.5rem 0;
+}
+.mapboxgl-popup-content {
+    background-image: linear-gradient(125deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3) 70%);
+    box-shadow: inset 1px 1px rgba(255, 255, 255, 0.2), inset -1px -1px rgba(255, 255, 255, 0.1), 1px 3px 24px -1px rgba(0, 0, 0, 0.15);
+    background-color: transparent;
+    border: none;
+    border-radius: 0.5rem;
+    background-clip: border-box;
+    color: black;
+}
+.mapboxgl-ctrl-attrib, .mapboxgl-ctrl-attrib-inner a {
+    color: black !important;
+}
+
+.nav-pills .nav-link {
+    background-color: rgba(50,50,50,0.7);
+
+}
+.nav-pills .nav-link.active {
+    background-color: rgba(0,0,0,0.9);
+}
+
+#page-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.copyonclick {
+    cursor: pointer;
+}
+.clicktext {
+    display: none;
+}
+@media (pointer:fine) {
+    .taptext {
+        display: none;
+    }
+    .clicktext {
+        display: initial;
+    }
+}
